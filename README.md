@@ -1,123 +1,101 @@
-# **Human Disease Prediction based on Symptoms using Machine Learning**
+# Patient Companion App 🏥
 
-## Project Overview
+A comprehensive healthcare application designed to assist patients in managing their health, tracking symptoms, and getting preliminary disease predictions using Machine Learning.
 
-The **Disease Prediction Based on Symptoms** project leverages multiple machine learning algorithms to predict the most likely disease based on user-provided symptoms. The system uses five different classifiers: **Random Forest**, **Support Vector Machine (SVM)**, **Naive Bayes**, **Decision Tree**, and **K-Nearest Neighbors (KNN)** to independently predict a disease. The final prediction is determined by a **majority-vote mechanism**, where the most frequent disease predicted by the models is selected as the final output.
+## 🌟 Features
 
-## Features
+-   **🤖 AI Disease Prediction:**
+    -   Integrated Machine Learning model (Random Forest/KNN) to predict potential diseases based on user symptoms.
+    -   Fuzzy matching for symptom inputs (e.g., "stomach ache" -> "stomach_pain").
+    -   Confidence scores and transparent reasoning (showing matched symptoms).
+-   **📝 Symptom Tracking:**
+    -   Log symptoms with severity, duration, and notes.
+    -   Attach images or documents to symptom logs.
+    -   View history of symptoms.
+-   **💊 Medication Management:**
+    -   Track medications, dosages, and frequencies.
+    -   **Smart Reminders:** Browser notifications to remind you when to take your pills.
+-   **📅 Appointment Scheduling:**
+    -   Schedule appointments with clinicians.
+    -   Conflict detection to prevent overlapping bookings.
+-   **📊 Health Analytics:**
+    -   Visual charts showing symptom severity trends over time.
+    -   Track the frequency of specific symptoms.
+-   **📄 Reports:**
+    -   Generate and download PDF reports of your health history for doctor visits.
+-   **🔐 Secure Authentication:**
+    -   Role-based access (Patient/Clinician) using Supabase Auth.
+    -   Data privacy with Row Level Security (RLS) policies.
 
-- **Symptom Input**: Users can input their symptoms via a user-friendly interface.
-- **Multiple Model Predictions**: The disease prediction is made by five machine learning models:
-  - Random Forest
-  - Support Vector Machine (SVM)
-  - Naive Bayes
-  - Decision Tree
-  - K-Nearest Neighbors (KNN)
-- **Majority-Vote Approach**: The system uses a majority-vote approach to select the final disease prediction based on the output from the five classifiers.
-- **Prediction Accuracy**: The system aims to improve prediction accuracy by combining the results of multiple models.
+## 🛠️ Tech Stack
 
-## Dataset
+### Frontend
+-   **Framework:** [React](https://react.dev/) (Vite)
+-   **Styling:** [Tailwind CSS v3](https://tailwindcss.com/)
+-   **Icons:** Lucide React
+-   **Charts:** Recharts
+-   **PDF Generation:** jsPDF
 
-The system relies on publicly available medical datasets to train the machine learning models. The dataset contains diseases labeled alongside their associated symptoms. An example of the dataset format:
+### Backend (ML API)
+-   **Language:** Python
+-   **Framework:** Flask
+-   **ML Libraries:** Scikit-learn, Pandas, NumPy
+-   **Algorithm:** Random Forest / K-Nearest Neighbors
 
-| Disease      | Symptom 1  | Symptom 2  | Symptom 3  | Symptom 4 | ... |
-|--------------|------------|------------|------------|-----------|-----|
-| Flu          | Fever      | Cough      | Fatigue    | Chills    | ... |
-| Malaria      | Fever      | Sweating   | Chills     | Fatigue   | ... |
-| COVID-19     | Fever      | Cough      | Shortness of breath | Fatigue   | ... |
-| ...          | ...        | ...        | ...        | ...       | ... |
+### Database & Auth
+-   **Provider:** [Supabase](https://supabase.com/)
+-   **Database:** PostgreSQL
+-   **Storage:** Supabase Storage (for attachments)
 
-### Data Preprocessing
+## 🚀 Getting Started
 
-- **Handling Missing Values**: Missing data is handled by imputation or row removal.
-- **Encoding Symptoms**: Symptoms are converted into numerical values (binary encoding).
-- **Feature Scaling**: Applied to standardize data for models like KNN and SVM.
-- **Data Splitting**: Data is split into training (80%) and testing (20%) sets.
+### Prerequisites
+-   Node.js (v18+)
+-   Python (v3.9+)
+-   A Supabase project
 
-## Methodology
+### 1. Database Setup
+1.  Create a new project on [Supabase](https://supabase.com/).
+2.  Go to the **SQL Editor**.
+3.  Copy the contents of `schema.sql` (located in the root directory) and run it.
+    -   *Note: If you face profile creation issues, run the commands in `fix_profiles.sql`.*
 
-![Train Data](https://github.com/user-attachments/assets/34505955-645b-49f0-87cf-10b3377c6067)
-<div align="center">
-<strong><h1>Human Disease Prediction based on Symptoms</h1><strong>
-</div>
+### 2. Frontend Setup
+1.  Navigate to the project directory:
+    ```bash
+    cd patient-companion-app
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Create a `.env` file in the root of `patient-companion-app` and add your Supabase credentials:
+    ```env
+    VITE_SUPABASE_URL=your_supabase_project_url
+    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+4.  Start the development server:
+    ```bash
+    npm run dev
+    ```
 
+### 3. ML API Setup
+1.  Navigate to the `patient-companion-app` directory (if not already there).
+2.  Install Python dependencies:
+    ```bash
+    pip install -r ml_api/requirements.txt
+    ```
+3.  Start the Flask API:
+    ```bash
+    python ml_api/app.py
+    ```
+    *The API runs on `http://localhost:5000` by default.*
 
-### 1. Data Preprocessing
+## 📸 Screenshots
+*(Add screenshots of your dashboard, symptom form, and prediction results here)*
 
-- **Cleaning and Transformation**: Handling missing data, converting categorical symptoms to numerical data, and scaling features for model compatibility.
+## 🤝 Contributing
+Contributions are welcome! Please open an issue or submit a pull request.
 
-### 2. Machine Learning Models
-
-Each model is trained independently using the preprocessed dataset:
-
-- **Random Forest**: An ensemble method that builds multiple decision trees and combines their results for prediction.
-- **Support Vector Machine (SVM)**: A classifier that finds the optimal hyperplane to separate different diseases in the feature space.
-- **Naive Bayes**: A probabilistic classifier based on Bayes' Theorem.
-- **Decision Tree**: A classifier that splits data at each node based on feature values.
-- **K-Nearest Neighbors (KNN)**: A non-parametric classifier that predicts based on the majority vote of the k-nearest data points.
-
-### 3. Majority-Vote Prediction
-
-- Each model provides a disease prediction based on the user-input symptoms.
-- The final disease prediction is selected based on the disease predicted by the majority of models (i.e., the disease predicted by most classifiers).
-
-### 4. Model Evaluation
-
-- **Accuracy**: Evaluated on the test dataset.
-- **Precision, Recall, F1-Score**: Used for classification performance evaluation.
-- **Confusion Matrix**: To analyze true positives, false positives, true negatives, and false negatives.
-
-## System Architecture
-
-- **User Interface (UI)**: Users enter symptoms via a form (e.g., checkbox selection or text input).
-- **Backend Processing**: The backend processes the user input and passes it through all five trained models.
-- **Majority-Vote Mechanism**: The predictions from each model are compared to select the most frequent disease.
-- **Result Display**: The system displays the predicted disease to the user.
-
-## Requirements
-
-- **Python 3.x**
-- Libraries: 
-  - `numpy`
-  - `pandas`
-  - `scikit-learn`
-  - `matplotlib` (for visualizations)
-  - `seaborn` (for visualizations)
-  - `joblib` (for model serialization)
-
-## Installation
-
-To run this project on your local machine:
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/SubhoHazra07/Human-Disease-Prediction-based-on-Symptoms-using-Machine-Learning.git
-2. Navigate to the project directory:
-   ```bash
-   cd Human Disease Prediction
-3. Create a virtual environment (optional but recommended):
-   ```bash
-   python -m venv venv
-4. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-
-## Usage
-
-Once the system is up and running, you can input your symptoms (fever, cough, fatigue, etc.), and the model will predict the most likely disease based on the majority-vote prediction approach. The final result will display the disease that has been predicted by most models.
-
-## Future Enhancements
-
-- **Continuous Learning:** Implement a feedback loop where the models are retrained with new data for improved predictions.
-- **Mobile Application:** Create a mobile app for easier access to the disease prediction system.
-- **Incorporate User History:** Consider incorporating user-specific data (e.g., medical history, age, etc.) to provide more personalized predictions.
-
-## Contributing
-
-Feel free to fork this repository, open issues, and submit pull requests to improve the project. Contributions are welcome!
-
-## Contact Information
-
-- **Author: Subho Hazra**
-- **Email: subho.hazra2003@gmail.com**
-- **GitHub: https://github.com/SubhoHazra07**
+## 📄 License
+MIT
